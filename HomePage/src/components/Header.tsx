@@ -1,7 +1,6 @@
-import React from 'react';
-import '../styles/header.css'; 
+import '../styles/header.css';
 
-export const Header: React.FC = () => {
+export const Header = () => {
   return (
     <header>
       <nav>
@@ -10,6 +9,7 @@ export const Header: React.FC = () => {
           <li><a href="/about">Обо мне</a></li>
           <li><a href="/skills">Навыки</a></li>
           <li><a href="/projects">Проекты</a></li>
+          <li><a href="/contact">Проекты</a></li>
         </ul>
       </nav>
     </header>

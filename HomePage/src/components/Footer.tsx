@@ -1,7 +1,6 @@
-import React from 'react';
-import '../styles/footer.css'; 
+import '../styles/footer.css';
 
-export const Footer: React.FC = () => {
+export const Footer = () => {
   return (
     <footer>
       <p>Электронная почта: serega_9598@mail.ru</p>

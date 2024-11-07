@@ -1,8 +1,7 @@
-import React from 'react';
 import '../styles/Home.css';
 
 
-export const Home: React.FC = () => {
+export const Home= () => {
   return (
     <div className="page-container" id='home-container'>
       <div className="page-content" id='home-content'>

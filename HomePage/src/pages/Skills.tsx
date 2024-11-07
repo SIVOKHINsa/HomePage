@@ -1,8 +1,7 @@
-import React from 'react';
 import '../styles/Skills.css';
 
 
-export const Skills: React.FC = () => {
+export const Skills = () => {
   return (
     <div className="page-container" id='skills-container'>
       <div className="page-content" id='skills-content'>

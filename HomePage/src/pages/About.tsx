@@ -1,7 +1,6 @@
-import React from 'react';
 import '../styles/About.css';
 
-export const About: React.FC = () => {
+export const About = () => {
     return (
         <div className="page-container" id='about-container'>
           <div className="page-content" id='about-content'>
