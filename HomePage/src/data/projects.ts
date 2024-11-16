@@ -17,3 +17,8 @@ export const projects: Project[] = [
         link: 'https://github.com/SIVOKHINsa/ToDo',
     },
 ];
+
+export const uniqueTechnologies: string[] = [
+    'All',
+    ...new Set(projects.flatMap((project) => project.technologies)),
+];

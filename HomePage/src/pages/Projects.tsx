@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { projects } from '../data/projects';
+import { projects, uniqueTechnologies} from '../data/projects';
 import { Project } from '../types/Project';
 import '../styles/Projects.css';
 
@@ -15,10 +15,6 @@ export const Projects = () => {
         selectedTech === 'All' ? true : project.technologies.includes(selectedTech)
     );
 
-    const uniqueTechnologies = [
-        'All',
-        ...new Set(projects.flatMap((project) => project.technologies)),
-    ];
 
     const handleProjectClick = (project: Project) => {
         setSelectedProject(project);
