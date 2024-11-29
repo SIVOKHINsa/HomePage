@@ -1,89 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback  } from 'react';
 import { useProjectStore } from '../store/useProjectStore';
 import { Project } from '../types/Project';
 import '../styles/Projects.css';
+import { v4 as uuidv4 } from 'uuid';
+import { NewProjectModal } from '../components/NewProjectModal';
+import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
+import { ProjectDetailsModal } from '../components/ProjectModal';
 
 export const Projects = () => {
     const [selectedTech, setSelectedTech] = useState<string>('All');
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-    const [NewProjectModal, setNewProjectModal] = useState<boolean>(false);
-    const [title, setTitle] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [technologies, setTechnologies] = useState<string>('');
-    const [link, setLink] = useState<string>('');
+    const [newProjectModalVisible, setNewProjectModalVisible] = useState<boolean>(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
-    const [projectToDelete, setProjectToDelete] = useState<number | null>(null);
-
+    const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
 
     const addProject = useProjectStore((state) => state.addProject);
     const removeProject = useProjectStore((state) => state.removeProject);
     const ProjectsFromStore = useProjectStore((state) => state.projects);
     const uniqueTechnologies = useProjectStore((state) => state.uniqueTechnologies);
 
-    const handleFilterChange = (tech: string) => {
+    const handleFilterChange = useCallback((tech: string) => {
         setSelectedTech(tech);
-    };
+    }, []);
 
     const filteredProjects = ProjectsFromStore.filter((project) =>
         selectedTech === 'All' ? true : project.technologies.includes(selectedTech)
     );
 
-    const handleOpenNewProjectModal = () => {
-        setNewProjectModal(true);
-    };
+    const handleOpenNewProjectModal = useCallback(() => {
+        setNewProjectModalVisible(true);
+    }, []);
 
-    const handleCloseNewProjectModal = () => {
-        setNewProjectModal(false);
-    };
+    const handleCloseNewProjectModal = useCallback(() => {
+        setNewProjectModalVisible(false);
+    }, []);
 
-    const handleProjectClick = (project: Project) => {
+    const handleProjectClick = useCallback((project: Project) => {
         setSelectedProject(project);
-    };
+    }, []);
 
-    const handleCloseModal = () => {
+    const handleCloseProjectModal = useCallback(() => {
         setSelectedProject(null);
-    };
+    }, []);
 
-    const handleSubmitNewProject = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const newProject: Project = {
-            id: ProjectsFromStore.length + 1,
-            title,
-            description,
-            technologies: technologies.split(',').map((tech) => tech.trim()),
-            link,
+    const handleSubmitNewProject = useCallback((newProject: { title: string; description: string; technologies: string[]; link: string }) => {
+        const projectWithId: Project = {
+            id: uuidv4(),
+            ...newProject,
         };
+        addProject(projectWithId);
+    }, []);
 
-        addProject(newProject);
-
-        setTitle('');
-        setDescription('');
-        setTechnologies('');
-        setLink('');
-
-        handleCloseNewProjectModal();
-    };
-
-    const handleDeleteProject = (projectId: number, e: React.MouseEvent) => {
-        e.stopPropagation();
+    const handleDeleteProject = useCallback((projectId: string) => {
         setShowDeleteConfirm(true);
         setProjectToDelete(projectId);
-    };
+    }, []);
 
-    const confirmDelete = () => {
+    const confirmDelete = useCallback(() => {
         if (projectToDelete !== null) {
-            removeProject(projectToDelete);
+            removeProject(projectToDelete); // Передаем projectId в removeProject
         }
         setShowDeleteConfirm(false);
         setProjectToDelete(null);
-        handleCloseModal();
-    };
+        handleCloseProjectModal();
+    }, [projectToDelete, removeProject, handleCloseProjectModal]);
 
-    const cancelDelete = () => {
+    const cancelDelete = useCallback(() => {
         setShowDeleteConfirm(false);
         setProjectToDelete(null);
-    };
+    }, []);
 
     return (
         <div className="page-container" id="home-container">
@@ -94,7 +79,7 @@ export const Projects = () => {
                         className="TechSecetBut"
                         onClick={() => handleFilterChange('All')}
                     >
-                        All
+                        Все
                     </button>
                     {uniqueTechnologies.map((tech) => (
                         <button
@@ -106,7 +91,6 @@ export const Projects = () => {
                         </button>
                     ))}
                 </div>
-
                 <h3>Проекты:</h3>
                 <ul className="ProjectsListUl">
                     {filteredProjects.map((project: Project) => (
@@ -123,94 +107,30 @@ export const Projects = () => {
                                 href={project.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
                             >
                                 Посмотреть проект
                             </a>
                         </li>
                     ))}
                 </ul>
-
                 {showDeleteConfirm && (
-                    <div className="modal" id="delete-modal">
-                        <div className="modal-content">
-                            <span className="close-button" onClick={cancelDelete}>&times;</span>
-                            <h3>Вы уверены, что хотите удалить этот проект?</h3>
-                            <button className="DelProjectBut" onClick={confirmDelete}>Да, удалить</button>
-                            <button className="DelProjectBut" onClick={cancelDelete}>Отмена</button>
-                        </div>
-                    </div>
+                    <DeleteConfirmModal
+                        onClose={cancelDelete}
+                        onConfirm={confirmDelete}
+                    />
                 )}
                 {selectedProject && (
-                    <div className="modal" id="project-modal">
-                        <div className="modal-content">
-                            <span className="close-button" onClick={handleCloseModal}>&times;</span>
-                            <h3>{selectedProject.title}</h3>
-                            <p><strong>Описание:</strong> {selectedProject.description}</p>
-                            <p><strong>Технологии:</strong> {selectedProject.technologies.join(', ')}</p>
-                            <a
-                                className="ProjectLink"
-                                href={selectedProject.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Посмотреть проект на GitHub
-                            </a>
-                            <button
-                                className="DelProjectBut"
-                                onClick={(e) => handleDeleteProject(selectedProject.id, e)}
-                            >
-                                Удалить
-                            </button>
-                        </div>
-                    </div>
+                    <ProjectDetailsModal
+                        selectedProject={selectedProject}
+                        onClose={handleCloseProjectModal}
+                        onDelete={handleDeleteProject}
+                    />
                 )}
-
-                {NewProjectModal && (
-                    <div className="modal">
-                        <div className="modal-content">
-                            <span className="close-button" onClick={handleCloseNewProjectModal}>&times;</span>
-                            <h3>Добавить новый проект</h3>
-                            <form onSubmit={handleSubmitNewProject}>
-                                <div className="form-group">
-                                    <label htmlFor="title">Название:</label>
-                                    <input
-                                        type="text"
-                                        id="title"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="description">Описание:</label>
-                                    <textarea
-                                        id="description"
-                                        value={description}
-                                        onChange={(e) => setDescription(e.target.value)}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="technologies">Технологии (через запятую):</label>
-                                    <input
-                                        type="text"
-                                        id="technologies"
-                                        value={technologies}
-                                        onChange={(e) => setTechnologies(e.target.value)}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="link">Ссылка на проект:</label>
-                                    <input
-                                        type="text"
-                                        id="link"
-                                        value={link}
-                                        onChange={(e) => setLink(e.target.value)}
-                                    />
-                                </div>
-                                <button className="AddProjectBut" type="submit">Добавить проект</button>
-                            </form>
-                        </div>
-                    </div>
+                {newProjectModalVisible && (
+                    <NewProjectModal
+                        onClose={handleCloseNewProjectModal}
+                        onSubmit={handleSubmitNewProject}
+                    />
                 )}
                 <button className="AddProjectBut" onClick={handleOpenNewProjectModal}>Добавить проект</button>
             </div>

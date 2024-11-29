@@ -34,8 +34,13 @@ interface ProjectStore {
     uniqueTechnologies: string[];
     setUniqueTechnologies: (technologies: string[]) => void;
     addProject: (project: Project) => void;
-    removeProject: (projectId: number) => void;
+    removeProject: (projectId: string) => void;
 }
+
+const updateLocalStorage = (projects: Project[], uniqueTechnologies: string[]) => {
+    localStorage.setItem('projects', JSON.stringify(projects));
+    localStorage.setItem('uniqueTechnologies', JSON.stringify(uniqueTechnologies));
+};
 
 
 export const useProjectStore = create<ProjectStore>((set) => ({
@@ -53,8 +58,7 @@ export const useProjectStore = create<ProjectStore>((set) => ({
         ]);
         const newTechnologies = Array.from(newTechnologiesSet);
 
-        localStorage.setItem('projects', JSON.stringify(newProjects));
-        localStorage.setItem('uniqueTechnologies', JSON.stringify(newTechnologies));
+        updateLocalStorage(newProjects, newTechnologies);
 
         return { projects: newProjects, uniqueTechnologies: newTechnologies };
     }),
@@ -68,8 +72,7 @@ export const useProjectStore = create<ProjectStore>((set) => ({
         const newTechnologiesSet = new Set(remainingTechnologies);
         const newTechnologies = Array.from(newTechnologiesSet);
 
-        localStorage.setItem('projects', JSON.stringify(newProjects));
-        localStorage.setItem('uniqueTechnologies', JSON.stringify(newTechnologies));
+        updateLocalStorage(newProjects, newTechnologies);
 
         return { projects: newProjects, uniqueTechnologies: newTechnologies };
     }),
