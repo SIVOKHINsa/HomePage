@@ -1,18 +1,14 @@
 header {
+  position: relative;
+  width: 100%;
   background-color: black;
   padding: 20px 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  max-width: 1200px;
   margin: 0;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-}
 
 nav {
   display: flex;
@@ -24,7 +20,7 @@ nav {
 nav ul {
   display: flex;
   list-style: none;
-  gap: 3vw; 
+  gap: 3vw;
   padding: 0;
   margin: 0;
 }
@@ -35,7 +31,7 @@ nav ul li a {
   color: white;
   font-size: 18px;
   font-weight: bold;
-  padding: 12px 20px; 
+  padding: 12px 20px;
   border-radius: 10px;
   transition: color 0.3s, background-color 0.3s;
 }
@@ -47,19 +43,19 @@ nav ul li a:hover {
 
 @media (max-width: 768px) {
   nav ul {
-    gap: 2vw; 
+    gap: 2vw;
   }
 
   nav ul li a {
     font-size: 16px;
-    padding: 10px 15px; 
+    padding: 10px 15px;
   }
 }
 
 @media (max-width: 480px) {
   nav ul {
-    flex-direction: column; 
-    gap: 10px; 
+    flex-direction: column;
+    gap: 10px;
     align-items: center;
   }
 
