@@ -8,7 +8,6 @@ export const projects: Project[] = [
         technologies: ['React', 'TypeScript'],
         link: 'https://github.com/SIVOKHINsa/HomePage',
     },
-
     {
         id: 2,
         title: 'ToDo',
@@ -22,3 +21,4 @@ export const uniqueTechnologies: string[] = [
     'All',
     ...new Set(projects.flatMap((project) => project.technologies)),
 ];
+

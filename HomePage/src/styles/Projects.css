@@ -15,6 +15,7 @@
     background-color: #0056b3;
 }
 
+
 .ProjectsListUl {
     list-style-type: none;
     padding: 0;
@@ -33,6 +34,7 @@
     background-color: #e5e5e5;
 }
 
+
 .ProjectLink {
     color: #0c0c0c;
     text-decoration: none;
@@ -42,6 +44,7 @@
 .ProjectLink:hover {
     color: #3a43c9;
 }
+
 
 .modal {
     position: fixed;
@@ -65,7 +68,22 @@
     box-sizing: border-box;
     overflow-y: auto;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
+
+#delete-modal {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    z-index: 1050;
+}
+
+#project-modal {
+    z-index: 1000;
+}
+
 
 .close-button {
     position: absolute;
@@ -79,3 +97,71 @@
 .close-button:hover {
     color: #000;
 }
+
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.AddProjectBut {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+
+.AddProjectBut:hover {
+    background-color: #0056b3;
+}
+
+
+.DelProjectBut {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+
+.DelProjectBut:hover {
+    background-color: #0056b3;
+}
+
+
