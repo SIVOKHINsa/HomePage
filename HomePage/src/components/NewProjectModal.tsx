@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Modal } from './Modal';
 import '../styles/NewProjectModal.css';
+import {NewProject} from "../types/Project.ts";
 
 interface NewProjectModalProps {
     onClose: () => void;
-    onSubmit: (projectData: { title: string, description: string, technologies: string[], link: string }) => void;
+    onSubmit: (projectData: NewProject) => void;
 }
 
 export const NewProjectModal: React.FC<NewProjectModalProps> = ({ onClose, onSubmit }) => {
@@ -32,7 +33,7 @@ export const NewProjectModal: React.FC<NewProjectModalProps> = ({ onClose, onSub
         const validationErrors = validate();
         setError(validationErrors);
 
-        if (Object.keys(validationErrors).length > 0) return; // Если есть ошибки, не отправляем форму
+        if (Object.keys(validationErrors).length > 0) return;
 
         const newProject = {
             title,

@@ -1,138 +1,104 @@
-import React, { useState, useCallback  } from 'react';
+import React, { useState, useEffect, useCallback  } from 'react';
 import { useProjectStore } from '../store/useProjectStore';
-import { Project } from '../types/Project';
+import { Project, NewProject } from '../types/Project';
 import '../styles/Projects.css';
 import { v4 as uuidv4 } from 'uuid';
 import { NewProjectModal } from '../components/NewProjectModal';
 import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
 import { ProjectDetailsModal } from '../components/ProjectModal';
+import { TechFilter } from '../components/TechFilter';
+import { ProjectList } from '../components/ProjectList';
+import { useModal } from '../components/useModal';
+
 
 export const Projects = () => {
-    const [selectedTech, setSelectedTech] = useState<string>('All');
-    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-    const [newProjectModalVisible, setNewProjectModalVisible] = useState<boolean>(false);
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
-    const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
 
+    const ProjectsFromStore = useProjectStore((state) => state.projects);
     const addProject = useProjectStore((state) => state.addProject);
     const removeProject = useProjectStore((state) => state.removeProject);
-    const ProjectsFromStore = useProjectStore((state) => state.projects);
     const uniqueTechnologies = useProjectStore((state) => state.uniqueTechnologies);
+
+    const [selectedTech, setSelectedTech] = useState<string>('All');
+    const { activeModal, openModal, closeModal, projectToDelete, selectedProject } = useModal({ ProjectsFromStore });
+    const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
 
     const handleFilterChange = useCallback((tech: string) => {
         setSelectedTech(tech);
     }, []);
 
-    const filteredProjects = ProjectsFromStore.filter((project) =>
-        selectedTech === 'All' ? true : project.technologies.includes(selectedTech)
-    );
-
-    const handleOpenNewProjectModal = useCallback(() => {
-        setNewProjectModalVisible(true);
+    const handleFilterProjects = useCallback((filtered: Project[]) => {
+        setFilteredProjects(filtered);
     }, []);
 
-    const handleCloseNewProjectModal = useCallback(() => {
-        setNewProjectModalVisible(false);
-    }, []);
+    useEffect(() => {
+        if (selectedTech === 'All') {
+            setFilteredProjects(ProjectsFromStore);
+        } else {
+            const filtered = ProjectsFromStore.filter((project) =>
+                project.technologies.includes(selectedTech)
+            );
+            setFilteredProjects(filtered);
+        }
+    }, [selectedTech, ProjectsFromStore]);
 
-    const handleProjectClick = useCallback((project: Project) => {
-        setSelectedProject(project);
-    }, []);
 
-    const handleCloseProjectModal = useCallback(() => {
-        setSelectedProject(null);
-    }, []);
-
-    const handleSubmitNewProject = useCallback((newProject: { title: string; description: string; technologies: string[]; link: string }) => {
-        const projectWithId: Project = {
+    const handleSubmitNewProject = useCallback((newProject: NewProject) => {
+        const project: Project = {
             id: uuidv4(),
             ...newProject,
         };
-        addProject(projectWithId);
-    }, []);
+        addProject(project);
+    }, [addProject]);
+
 
     const handleDeleteProject = useCallback((projectId: string) => {
-        setShowDeleteConfirm(true);
-        setProjectToDelete(projectId);
-    }, []);
+        openModal('deleteConfirm', projectId);
+    }, [openModal]);
 
     const confirmDelete = useCallback(() => {
         if (projectToDelete !== null) {
-            removeProject(projectToDelete); // Передаем projectId в removeProject
+            removeProject(projectToDelete);
         }
-        setShowDeleteConfirm(false);
-        setProjectToDelete(null);
-        handleCloseProjectModal();
-    }, [projectToDelete, removeProject, handleCloseProjectModal]);
+        closeModal();
+    }, [projectToDelete, removeProject, closeModal]);
 
     const cancelDelete = useCallback(() => {
-        setShowDeleteConfirm(false);
-        setProjectToDelete(null);
-    }, []);
+        closeModal();
+    }, [closeModal]);
 
     return (
         <div className="page-container" id="home-container">
             <div className="page-content" id="home-content">
-                <div>
-                    <h3>Фильтр по технологиям:</h3>
-                    <button
-                        className="TechSecetBut"
-                        onClick={() => handleFilterChange('All')}
-                    >
-                        Все
-                    </button>
-                    {uniqueTechnologies.map((tech) => (
-                        <button
-                            className="TechSecetBut"
-                            key={tech}
-                            onClick={() => handleFilterChange(tech)}
-                        >
-                            {tech}
-                        </button>
-                    ))}
-                </div>
+                <TechFilter
+                    selectedTech={selectedTech}
+                    uniqueTechnologies={uniqueTechnologies}
+                    onFilterChange={handleFilterChange}
+                    onFilterProjects={handleFilterProjects}
+                    allProjects={ProjectsFromStore}
+                />
                 <h3>Проекты:</h3>
-                <ul className="ProjectsListUl">
-                    {filteredProjects.map((project: Project) => (
-                        <li
-                            className="ProjectsListlI"
-                            key={project.id}
-                            onClick={() => handleProjectClick(project)}
-                        >
-                            <h3>{project.title}</h3>
-                            <p>{project.description}</p>
-                            <p><strong>Технологии:</strong> {project.technologies.join(', ')}</p>
-                            <a
-                                className="ProjectLink"
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Посмотреть проект
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-                {showDeleteConfirm && (
+                <ProjectList projects={filteredProjects} onProjectClick={(project) => openModal('projectDetails', project.id)} />
+
+                {activeModal === 'deleteConfirm' && (
                     <DeleteConfirmModal
                         onClose={cancelDelete}
                         onConfirm={confirmDelete}
                     />
                 )}
-                {selectedProject && (
+                {activeModal === 'projectDetails' && selectedProject && (
                     <ProjectDetailsModal
                         selectedProject={selectedProject}
-                        onClose={handleCloseProjectModal}
+                        onClose={closeModal}
                         onDelete={handleDeleteProject}
                     />
                 )}
-                {newProjectModalVisible && (
+                {activeModal === 'newProject' && (
                     <NewProjectModal
-                        onClose={handleCloseNewProjectModal}
+                        onClose={closeModal}
                         onSubmit={handleSubmitNewProject}
                     />
                 )}
-                <button className="AddProjectBut" onClick={handleOpenNewProjectModal}>Добавить проект</button>
+                <button className="AddProjectBut" onClick={() => openModal('newProject')}>Добавить проект</button>
             </div>
         </div>
     );
