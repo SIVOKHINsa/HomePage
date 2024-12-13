@@ -1,0 +1,25 @@
+#delete-modal {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    z-index: 1050;
+}
+
+
+.DelProjectBut {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+
+.DelProjectBut:hover {
+    background-color: #0056b3;
+}
