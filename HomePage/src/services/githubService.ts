@@ -1,18 +1,24 @@
-import axios from 'axios';
-import { Project } from '../types/Project';
+import axios, { AxiosInstance }  from 'axios';
+import { Project, GitHubRepo } from '../types/Project';
 import { v4 as uuidv4 } from "uuid";
 
-const GITHUB_API_URL = 'https://api.github.com';
+const githubApi: AxiosInstance = axios.create({
+    baseURL: 'https://api.github.com',
+    headers: {
+        Accept: 'application/vnd.github.v3+json',
+    },
+});
+
 
 export const fetchRepos = async (username: string, token?: string): Promise<Project[]> => {
     try {
-        const response = await axios.get(`${GITHUB_API_URL}/users/${username}/repos`, {
-            headers: token ? { Authorization: `token ${token}` } : {},
-        });
+        const headers = token ? { Authorization: `token ${token}` } : {};
+        const response = await githubApi.get<GitHubRepo[]>(`/users/${username}/repos`, { headers });
+
 
         const repos = response.data;
 
-        const projects: Project[] = repos.map((repo: any) => ({
+        const projects: Project[] = repos.map((repo: GitHubRepo) => ({
             id: uuidv4(),
             title: repo.name,
             description: repo.description || 'Нет описания',
@@ -23,12 +29,11 @@ export const fetchRepos = async (username: string, token?: string): Promise<Proj
         return projects;
     } catch (error) {
         console.error('Ошибка при получении репозиториев:', error);
-        return [];
+        throw new Error('Не удалось загрузить репозитории GitHub');
     }
 };
 
-
-const extractTechnologies = (repo: any): string[] => {
+const extractTechnologies = (repo: GitHubRepo): string[] => {
     const technologies: string[] = [];
 
     if (repo.language) {
