@@ -13,3 +13,10 @@ export interface NewProject{
     link: string;
 }
 
+export interface GitHubRepo {
+    id: number;
+    name: string;
+    description: string | null;
+    language: string | null;
+    html_url: string;
+}

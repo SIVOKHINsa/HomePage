@@ -1,6 +1,8 @@
 header {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 100vh;
   background-color: black;
   padding: 20px 40px;
   display: flex;

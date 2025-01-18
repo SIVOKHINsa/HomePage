@@ -1,6 +1,8 @@
 footer {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 100vh;
   background-color: black;
   color: #fff;
   padding: 30px 40px;
@@ -9,6 +11,7 @@ footer {
   align-items: center;
   justify-content: center;
   text-align: center;
+  margin: 0;
 }
 
 footer p {
@@ -35,12 +38,7 @@ footer ul li a:hover {
 }
 
 @media (max-width: 768px) {
-  footer {
-    padding: 15px 10px;
-    font-size: 0.9em;
-  }
-
-  footer ul {
+  ul {
     gap: 10px;
     flex-direction: column;
   }

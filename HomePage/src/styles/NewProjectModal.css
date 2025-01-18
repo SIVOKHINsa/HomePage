@@ -21,9 +21,12 @@
     align-self: flex-start;
 }
 
-
 .AddProjectBut:hover {
     background-color: #0056b3;
 }
 
+.DivForButtons .AddProjectBut {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
 
