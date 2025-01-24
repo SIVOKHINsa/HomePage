@@ -19,7 +19,6 @@ export const projects: Project[] = [
 ];
 
 export const uniqueTechnologies: string[] = [
-    'All',
     ...new Set(projects.flatMap((project) => project.technologies)),
 ];
 

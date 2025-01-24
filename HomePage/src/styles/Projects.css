@@ -8,13 +8,22 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
-    width: 100px;
+    width: 110px;
 }
 
 .TechSecetBut:hover {
     background-color: #0056b3;
 }
 
+body.dark .TechSecetBut {
+    background-color: #E5E5E5;
+    color: #000000;
+}
+
+body.dark .TechSecetBut:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
 
 .ProjectsListUl {
     list-style-type: none;
@@ -30,10 +39,26 @@
     transition: background-color 0.3s;
 }
 
-.ProjectsListlI:hover {
-    background-color: #e5e5e5;
+body.dark .ProjectsListlI {
+    color: #0c0c0c;
+    background-color: #E5E5E5;
+    transition: background-color 0.3s;
 }
 
+body.dark .ProjectsListlI:hover  {
+    color: #0c0c0c;
+    background-color: #ffffff;
+}
+
+.ProjectsListlI:hover {
+    background-color: #ffffff;
+    color: #0c0c0c;
+}
+
+
+body.dark .ProjectsListlI:hover {
+    background-color: #f0f0f0;
+}
 
 .ProjectLink {
     color: #0c0c0c;
@@ -73,6 +98,14 @@
     gap: 15px;
 }
 
+body.dark .modal-content {
+    color: #0c0c0c;
+    background-color: #E5E5E5;
+}
+
+body.dark .modal {
+    color: #0c0c0c;
+}
 
 
 .close-button {

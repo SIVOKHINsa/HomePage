@@ -1,5 +1,7 @@
 import '../styles/Contact.css';
 import React, {useState} from 'react';
+import { motion } from "framer-motion";
+
 
 
 export const Contact = () => {
@@ -77,7 +79,14 @@ export const Contact = () => {
                             }}
                         />
                     </div>
-                    <button id="ContactSendBut" type="submit">Отправить</button>
+                    <motion.button
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 1.0}}
+                        id="ContactSendBut"
+                        type="submit"
+                    >
+                        Отправить
+                    </motion.button>
                     {errors && <p style={{ color: 'red' }}>{errors}</p>}
                     {isSubmitted && <p>Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.</p>}
                 </form>

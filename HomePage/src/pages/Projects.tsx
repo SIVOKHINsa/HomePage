@@ -10,26 +10,20 @@ import { TechFilter } from '../components/TechFilter';
 import { ProjectList } from '../components/ProjectList';
 import { useModal } from '../components/useModal';
 import { Spinner } from '../components/LoadingSpinner.tsx';
+import { motion } from "framer-motion";
+
 
 export const Projects = () => {
 
-    const {
-        projects: ProjectsFromStore,
-        addProject,
-        removeProject,
-        uniqueTechnologies,
-        status,
-        error,
-        fetchProjects,
-    } = useProjectStore((state) => ({
-        projects: state.projects,
-        addProject: state.addProject,
-        removeProject: state.removeProject,
-        uniqueTechnologies: state.uniqueTechnologies,
-        status: state.status,
-        error: state.error,
-        fetchProjects: state.fetchProjects,
-    }));
+    const ProjectsFromStore = useProjectStore((state) => state.projects);
+    const addProject = useProjectStore((state) => state.addProject);
+    const removeProject = useProjectStore((state) => state.removeProject);
+    const uniqueTechnologies = useProjectStore((state) => state.uniqueTechnologies);
+
+    const status = useProjectStore((state) => state.status);
+    const error = useProjectStore((state) => state.error);
+    const fetchProjects = useProjectStore((state) => state.fetchProjects);
+
 
     const [selectedTech, setSelectedTech] = useState<string>('All');
     const { activeModal, openModal, closeModal, projectToDelete, selectedProject } = useModal({ ProjectsFromStore });
@@ -119,8 +113,22 @@ export const Projects = () => {
                     />
                 )}
                 <div className="DivForButtons">
-                    <button className="AddProjectBut" onClick={() => openModal('newProject')}>Добавить проект</button>
-                    <button className="AddProjectBut" onClick={fetchProjects}>Загрузить проекты с GIT</button>
+                    <motion.button
+                        className="AddProjectBut"
+                        onClick={() => openModal('newProject')}
+                        whileHover={{scale: 1.05}}
+                        whileTap={{scale: 1.0}}
+                    >
+                        Добавить проект
+                    </motion.button>
+                    <motion.button
+                        className="AddProjectBut"
+                        onClick={fetchProjects}
+                        whileHover={{scale: 1.05}}
+                        whileTap={{scale: 1.0}}
+                    >
+                        Загрузить проекты с GIT
+                    </motion.button>
                 </div>
             </div>
         </div>

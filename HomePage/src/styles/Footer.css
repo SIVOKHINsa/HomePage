@@ -1,8 +1,7 @@
 footer {
   position: relative;
   width: 100%;
-  max-width: 100%;
-  min-width: 100vh;
+  max-width: 95%;
   background-color: black;
   color: #fff;
   padding: 30px 40px;
@@ -12,6 +11,7 @@ footer {
   justify-content: center;
   text-align: center;
   margin: 0;
+  bottom: 0;
 }
 
 footer p {
@@ -35,6 +35,19 @@ footer ul li a {
 
 footer ul li a:hover {
   color: #3a43c9;
+}
+
+@media (max-width: 480px) {
+
+  footer {
+    max-width: 88%;
+  }
+}
+
+@media (max-width: 390px) {
+  footer {
+    max-width: 87%;
+  }
 }
 
 @media (max-width: 768px) {

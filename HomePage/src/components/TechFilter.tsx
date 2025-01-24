@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Project } from '../types/Project';
+import { motion } from "framer-motion";
 
 interface TechFilterProps {
     selectedTech: string;
@@ -21,17 +22,24 @@ export const TechFilter: FC<TechFilterProps> = ({ selectedTech, uniqueTechnologi
     return (
         <div>
             <h3>Фильтр по технологиям:</h3>
-            <button className="TechSecetBut" onClick={() => handleFilterChange('All')}>
+            <motion.button
+                className="TechSecetBut"
+                onClick={() => handleFilterChange('All')}
+                whileHover={{scale: 1.05}}
+                whileTap={{scale: 1.0}}
+            >
                 Все
-            </button>
+            </motion.button>
             {uniqueTechnologies.map((tech) => (
-                <button
+                <motion.button
                     className="TechSecetBut"
                     key={tech}
                     onClick={() => handleFilterChange(tech)}
+                    whileHover={{scale: 1.05}}
+                    whileTap={{scale: 1.0}}
                 >
                     {tech}
-                </button>
+                </motion.button>
             ))}
         </div>
     );
