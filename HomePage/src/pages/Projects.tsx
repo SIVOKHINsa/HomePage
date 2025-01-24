@@ -15,15 +15,23 @@ import { motion } from "framer-motion";
 
 export const Projects = () => {
 
-    const ProjectsFromStore = useProjectStore((state) => state.projects);
-    const addProject = useProjectStore((state) => state.addProject);
-    const removeProject = useProjectStore((state) => state.removeProject);
-    const uniqueTechnologies = useProjectStore((state) => state.uniqueTechnologies);
-
-    const status = useProjectStore((state) => state.status);
-    const error = useProjectStore((state) => state.error);
-    const fetchProjects = useProjectStore((state) => state.fetchProjects);
-
+    const {
+        projects: ProjectsFromStore,
+        addProject,
+        removeProject,
+        uniqueTechnologies,
+        status,
+        error,
+        fetchProjects,
+    } = useProjectStore((state) => ({
+        projects: state.projects,
+        addProject: state.addProject,
+        removeProject: state.removeProject,
+        uniqueTechnologies: state.uniqueTechnologies,
+        status: state.status,
+        error: state.error,
+        fetchProjects: state.fetchProjects,
+    }));
 
     const [selectedTech, setSelectedTech] = useState<string>('All');
     const { activeModal, openModal, closeModal, projectToDelete, selectedProject } = useModal({ ProjectsFromStore });
