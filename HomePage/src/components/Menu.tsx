@@ -9,6 +9,8 @@ const menuItems = [
     { label: 'Связаться', path: '/contact' }
 ];
 
+
+
 export const Menu = ({ menuBoxClass = "", menuItemClass = "" }) => (
     <ul className={menuBoxClass}>
         {menuItems.map(item => (
