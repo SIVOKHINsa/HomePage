@@ -30,12 +30,12 @@
     margin-bottom: 5px;
 }
 
-body.dark .AddProjectBut {
+body[data-theme="dark"] .AddProjectBut {
     background-color: #E5E5E5;
     color: #000000;
 }
 
-body.dark .AddProjectBut:hover {
+body[data-theme="dark"] .AddProjectBut:hover {
     background-color: #ffffff;
     color: #000000;
 }

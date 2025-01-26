@@ -10,6 +10,14 @@ interface TechFilterProps {
     allProjects: Project[];
 }
 
+const AllTech = 'All';
+
+const buttonAnimations = {
+    whileHover: { scale: 1.05 },
+    whileTap: { scale: 1.0 },
+    className: "TechSelectBut"
+};
+
 export const TechFilter: FC<TechFilterProps> = ({ selectedTech, uniqueTechnologies, onFilterChange, onFilterProjects, allProjects }) => {
     const handleFilterChange = (tech: string) => {
         onFilterChange(tech);
@@ -23,20 +31,16 @@ export const TechFilter: FC<TechFilterProps> = ({ selectedTech, uniqueTechnologi
         <div>
             <h3>Фильтр по технологиям:</h3>
             <motion.button
-                className="TechSecetBut"
-                onClick={() => handleFilterChange('All')}
-                whileHover={{scale: 1.05}}
-                whileTap={{scale: 1.0}}
+                onClick={() => handleFilterChange(AllTech)}
+                {...buttonAnimations}
             >
                 Все
             </motion.button>
-            {uniqueTechnologies.map((tech) => (
+            {uniqueTechnologies.map((tech: string) => (
                 <motion.button
-                    className="TechSecetBut"
                     key={tech}
                     onClick={() => handleFilterChange(tech)}
-                    whileHover={{scale: 1.05}}
-                    whileTap={{scale: 1.0}}
+                    {...buttonAnimations}
                 >
                     {tech}
                 </motion.button>

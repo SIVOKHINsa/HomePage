@@ -1,7 +1,8 @@
-// src/context/ThemeContext.tsx
 import { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 type Theme = 'light' | 'dark';
+
+const ThemeKey = 'theme';
 
 interface ThemeContextProps {
     theme: Theme;
@@ -10,25 +11,35 @@ interface ThemeContextProps {
 
 export const ThemeContext = createContext<ThemeContextProps>({
     theme: 'light',
-    toggleTheme: () => {}, // Дефолтное значение
+    toggleTheme: () => {},
 });
 
 interface ThemeProviderProps {
     children: ReactNode;
 }
 
+const isValidTheme = (theme: string | null): theme is Theme => {
+    return theme === 'light' || theme === 'dark';
+};
+
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-    const storedTheme = localStorage.getItem('theme') as Theme | null;
-    const [theme, setTheme] = useState<Theme>(storedTheme || 'light');
+    const [theme, setTheme] = useState<Theme>(() => {
+        const storedTheme = localStorage.getItem(ThemeKey);
+        return isValidTheme(storedTheme) ? storedTheme : 'light';
+    });
 
     const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
+        localStorage.setItem(ThemeKey, newTheme);
     };
 
     useEffect(() => {
-        document.body.className = theme;
+        document.body.setAttribute('data-theme', theme)
+
+        return () => {
+            document.body.removeAttribute('data-theme');
+        };
     }, [theme]);
 
     return (
@@ -40,6 +51,5 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
 export const useTheme = () => {
     const context = useContext(ThemeContext);
-    if (!context) throw new Error('useTheme must be used within a ThemeProvider');
     return context;
 };

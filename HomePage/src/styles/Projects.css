@@ -1,4 +1,4 @@
-.TechSecetBut {
+.TechSelectBut {
     margin: 3px;
     padding: 5px 5px;
     background-color: #007bff;
@@ -11,16 +11,16 @@
     width: 110px;
 }
 
-.TechSecetBut:hover {
+.TechSelectBut:hover {
     background-color: #0056b3;
 }
 
-body.dark .TechSecetBut {
+body[data-theme="dark"] .TechSelectBut {
     background-color: #E5E5E5;
     color: #000000;
 }
 
-body.dark .TechSecetBut:hover {
+body[data-theme="dark"] .TechSelectBut:hover {
     background-color: #ffffff;
     color: #000000;
 }
@@ -39,13 +39,13 @@ body.dark .TechSecetBut:hover {
     transition: background-color 0.3s;
 }
 
-body.dark .ProjectsListlI {
+body[data-theme="dark"] .ProjectsListlI {
     color: #0c0c0c;
     background-color: #E5E5E5;
     transition: background-color 0.3s;
 }
 
-body.dark .ProjectsListlI:hover  {
+body[data-theme="dark"] .ProjectsListlI:hover  {
     color: #0c0c0c;
     background-color: #ffffff;
 }
@@ -56,7 +56,7 @@ body.dark .ProjectsListlI:hover  {
 }
 
 
-body.dark .ProjectsListlI:hover {
+body[data-theme="dark"] .ProjectsListlI:hover {
     background-color: #f0f0f0;
 }
 
@@ -98,12 +98,12 @@ body.dark .ProjectsListlI:hover {
     gap: 15px;
 }
 
-body.dark .modal-content {
+body[data-theme="dark"] .modal-content {
     color: #0c0c0c;
     background-color: #E5E5E5;
 }
 
-body.dark .modal {
+body[data-theme="dark"] .modal {
     color: #0c0c0c;
 }
 

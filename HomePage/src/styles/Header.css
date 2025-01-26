@@ -128,7 +128,7 @@ nav ul li a:hover {
     color: #3a43c9;;
 }
 
-body.dark .theme-toggle {
+body[data-theme="dark"] .theme-toggle {
     background: #444444;
 }
 .theme-toggle .icon {
@@ -145,13 +145,13 @@ body.dark .theme-toggle {
     transition: transform 0.3s ease, color 0.3s ease, background 0.3s ease;
 }
 
-body.light .theme-toggle .icon {
+body[data-theme="light"] .theme-toggle .icon {
     transform: translateX(0);
     color: linear-gradient(135deg, #ffffff, #f5f5f5);
     background: linear-gradient(135deg, #ffffff, #f5f5f5);
 }
 
-body.dark .theme-toggle .icon {
+body[data-theme="dark"] .theme-toggle .icon {
     transform: translateX(30px);
     color: #fff;
     border: none;
@@ -180,7 +180,7 @@ body.dark .theme-toggle .icon {
     transition: all 0.3s ease;
 }
 
-body.dark .menu-toggle span {
+body[data-theme="dark"] .menu-toggle span {
     background-color: #fff;
 }
 

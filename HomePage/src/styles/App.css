@@ -8,13 +8,13 @@ html, body, #root {
 }
 
 
-.light {
+[data-theme="light"]{
   background-color: #ffffff;
   color: #000000;
 }
 
 
-.dark {
+[data-theme="dark"] {
   background-color: #444444;
   color: #ffffff;
 }
