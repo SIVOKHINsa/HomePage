@@ -10,6 +10,8 @@ import { TechFilter } from '../components/TechFilter';
 import { ProjectList } from '../components/ProjectList';
 import { useModal } from '../components/useModal';
 import { Spinner } from '../components/LoadingSpinner.tsx';
+import { motion } from "framer-motion";
+
 
 export const Projects = () => {
 
@@ -119,8 +121,22 @@ export const Projects = () => {
                     />
                 )}
                 <div className="DivForButtons">
-                    <button className="AddProjectBut" onClick={() => openModal('newProject')}>Добавить проект</button>
-                    <button className="AddProjectBut" onClick={fetchProjects}>Загрузить проекты с GIT</button>
+                    <motion.button
+                        className="AddProjectBut"
+                        onClick={() => openModal('newProject')}
+                        whileHover={{scale: 1.05}}
+                        whileTap={{scale: 1.0}}
+                    >
+                        Добавить проект
+                    </motion.button>
+                    <motion.button
+                        className="AddProjectBut"
+                        onClick={fetchProjects}
+                        whileHover={{scale: 1.05}}
+                        whileTap={{scale: 1.0}}
+                    >
+                        Загрузить проекты с GIT
+                    </motion.button>
                 </div>
             </div>
         </div>

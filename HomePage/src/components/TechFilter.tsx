@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Project } from '../types/Project';
+import { motion } from "framer-motion";
 
 interface TechFilterProps {
     selectedTech: string;
@@ -8,6 +9,14 @@ interface TechFilterProps {
     onFilterProjects: (filteredProjects: Project[]) => void;
     allProjects: Project[];
 }
+
+const AllTech = 'All';
+
+const buttonAnimations = {
+    whileHover: { scale: 1.05 },
+    whileTap: { scale: 1.0 },
+    className: "TechSelectBut"
+};
 
 export const TechFilter: FC<TechFilterProps> = ({ selectedTech, uniqueTechnologies, onFilterChange, onFilterProjects, allProjects }) => {
     const handleFilterChange = (tech: string) => {
@@ -21,17 +30,20 @@ export const TechFilter: FC<TechFilterProps> = ({ selectedTech, uniqueTechnologi
     return (
         <div>
             <h3>Фильтр по технологиям:</h3>
-            <button className="TechSecetBut" onClick={() => handleFilterChange('All')}>
+            <motion.button
+                onClick={() => handleFilterChange(AllTech)}
+                {...buttonAnimations}
+            >
                 Все
-            </button>
-            {uniqueTechnologies.map((tech) => (
-                <button
-                    className="TechSecetBut"
+            </motion.button>
+            {uniqueTechnologies.map((tech: string) => (
+                <motion.button
                     key={tech}
                     onClick={() => handleFilterChange(tech)}
+                    {...buttonAnimations}
                 >
                     {tech}
-                </button>
+                </motion.button>
             ))}
         </div>
     );

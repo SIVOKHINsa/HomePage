@@ -1,20 +1,27 @@
 import '../styles/Contact.css';
 import React, {useState} from 'react';
+import { motion } from "framer-motion";
+
+
+const emailRegex = /^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
 
 
 export const Contact = () => {
-    const [name, setName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [message, setMessage] = useState<string>('');
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
     const [errors, setError] = useState<string>('');
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
     const validate = () => {
         let errorMessage: string = '';
 
-        if (!name || !message || !email) {
+        if (!formData.name || !formData.message || !formData.email) {
             errorMessage = 'Заполните все поля!';
-        } else if (!/^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
+        } else if (!emailRegex.test(formData.email)) {
             errorMessage = 'Введите корректный email';
         }
 
@@ -31,11 +38,18 @@ export const Contact = () => {
             return;
         }
 
-        setName('');
-        setEmail('');
-        setMessage('');
+        setFormData({ name: '', email: '', message: '' });
         setError('');
         setIsSubmitted(true);
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { id, value } = e.target;
+        setFormData({
+            ...formData,
+            [id]: value
+        });
+        setIsSubmitted(false);
     };
 
     return (
@@ -47,11 +61,8 @@ export const Contact = () => {
                         <input
                             type="text"
                             id="name"
-                            value={name}
-                            onChange={(e) => {
-                                setName(e.target.value);
-                                setIsSubmitted(false);
-                            }}
+                            value={formData.name}
+                            onChange={handleChange}
                         />
                     </div>
                     <div>
@@ -59,25 +70,26 @@ export const Contact = () => {
                         <input
                             type="text"
                             id="email"
-                            value={email}
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                                setIsSubmitted(false);
-                            }}
+                            value={formData.email}
+                            onChange={handleChange}
                         />
                     </div>
                     <div>
                         <label htmlFor="message">Сообщение:</label>
                         <textarea
                             id="message"
-                            value={message}
-                            onChange={(e) => {
-                                setMessage(e.target.value);
-                                setIsSubmitted(false);
-                            }}
+                            value={formData.message}
+                            onChange={handleChange}
                         />
                     </div>
-                    <button id="ContactSendBut" type="submit">Отправить</button>
+                    <motion.button
+                        whileHover={{scale: 1.1}}
+                        whileTap={{scale: 1.0}}
+                        id="ContactSendBut"
+                        type="submit"
+                    >
+                        Отправить
+                    </motion.button>
                     {errors && <p style={{ color: 'red' }}>{errors}</p>}
                     {isSubmitted && <p>Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.</p>}
                 </form>
